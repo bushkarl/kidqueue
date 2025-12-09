@@ -84,6 +84,9 @@ function App() {
           key={i}
           className={`relative flex flex-col items-center transition-all duration-300 ${
             isMainPerson ? 'scale-110' : 'scale-100'
+          } ${
+            isFrontSection ? 'border-2 border-dashed border-blue-400 rounded-lg p-2' :
+            isBackSection ? 'border-2 border-dashed border-emerald-400 rounded-lg p-2' : ''
           }`}
         >
           <div
