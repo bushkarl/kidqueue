@@ -2,40 +2,34 @@ import { Character } from '../types';
 
 export const characters: Character[] = [
   {
-    id: 'peashooter',
-    name: '豌豆射手',
-    emoji: '🌱',
-    color: 'text-green-600',
+    id: 'boy',
+    name: '小男孩',
+    imageUrl: 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=200',
+    color: 'border-blue-400',
   },
   {
-    id: 'minion',
-    name: '小黄人',
-    emoji: '👾',
-    color: 'text-yellow-600',
+    id: 'girl',
+    name: '小女孩',
+    imageUrl: 'https://images.pexels.com/photos/1624695/pexels-photo-1624695.jpeg?auto=compress&cs=tinysrgb&w=200',
+    color: 'border-pink-400',
   },
   {
-    id: 'ultraman',
-    name: '奥特曼',
-    emoji: '🦸',
-    color: 'text-red-600',
+    id: 'astronaut',
+    name: '宇航员',
+    imageUrl: 'https://images.pexels.com/photos/2166711/pexels-photo-2166711.jpeg?auto=compress&cs=tinysrgb&w=200',
+    color: 'border-purple-400',
   },
   {
-    id: 'snowwhite',
-    name: '白雪公主',
-    emoji: '👸',
-    color: 'text-pink-600',
-  },
-  {
-    id: 'elsa',
-    name: '艾莎公主',
-    emoji: '❄️',
-    color: 'text-blue-400',
+    id: 'doctor',
+    name: '小医生',
+    imageUrl: 'https://images.pexels.com/photos/6393342/pexels-photo-6393342.jpeg?auto=compress&cs=tinysrgb&w=200',
+    color: 'border-green-400',
   },
   {
     id: 'custom',
     name: '自定义',
-    emoji: '✨',
-    color: 'text-purple-600',
+    imageUrl: '',
+    color: 'border-gray-400',
   },
 ];
 

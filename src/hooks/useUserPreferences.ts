@@ -4,7 +4,7 @@ import { CharacterId, SceneId, UserPreferences } from '../types';
 const STORAGE_KEY = 'queue_visualizer_preferences';
 
 const defaultPreferences: UserPreferences = {
-  characterId: 'peashooter',
+  characterId: 'boy',
   customCharacterName: '',
   sceneId: 'exercise',
 };

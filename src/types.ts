@@ -1,11 +1,11 @@
 export type ProblemType = '1' | '2' | '3';
 
-export type CharacterId = 'peashooter' | 'minion' | 'ultraman' | 'snowwhite' | 'elsa' | 'custom';
+export type CharacterId = 'boy' | 'girl' | 'astronaut' | 'doctor' | 'custom';
 
 export interface Character {
   id: CharacterId;
   name: string;
-  emoji: string;
+  imageUrl: string;
   color: string;
 }
 

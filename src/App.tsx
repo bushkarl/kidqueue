@@ -90,15 +90,25 @@ function App() {
         <div
           key={i}
           className={`relative flex flex-col items-center transition-all duration-300 border-none ${
-            isMainPerson ? 'scale-125' : 'scale-100'
+            isMainPerson ? 'scale-110' : 'scale-100'
           }`}
         >
           {isMainPerson ? (
             <div className="relative flex flex-col items-center">
-              <div className="text-6xl mb-1 animate-bounce" style={{ animationDuration: '2s' }}>
-                {selectedCharacter.emoji}
-              </div>
-              <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap shadow-lg">
+              {selectedCharacter.imageUrl ? (
+                <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-rose-400 shadow-lg animate-bounce" style={{ animationDuration: '2s' }}>
+                  <img
+                    src={selectedCharacter.imageUrl}
+                    alt={characterName}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center border-4 border-rose-400 shadow-lg animate-bounce" style={{ animationDuration: '2s' }}>
+                  <span className="text-3xl">✨</span>
+                </div>
+              )}
+              <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap shadow-lg">
                 {characterName}
               </div>
             </div>
@@ -301,7 +311,19 @@ function App() {
               </div>
 
               <div className="bg-gradient-to-br from-rose-100 to-pink-100 rounded-lg p-3 text-center border-2 border-rose-300 shadow-md">
-                <div className="text-4xl mb-1">{selectedCharacter.emoji}</div>
+                {selectedCharacter.imageUrl ? (
+                  <div className="w-12 h-12 mx-auto mb-1 rounded-full overflow-hidden border-2 border-rose-300">
+                    <img
+                      src={selectedCharacter.imageUrl}
+                      alt={characterName}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 mx-auto mb-1 rounded-full bg-gradient-to-br from-purple-300 to-pink-300 flex items-center justify-center">
+                    <span className="text-2xl">✨</span>
+                  </div>
+                )}
                 <p className="text-xs font-semibold text-rose-700">{characterName}</p>
                 <p className="text-lg font-bold text-rose-900">1</p>
               </div>
