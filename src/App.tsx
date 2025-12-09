@@ -263,7 +263,7 @@ function App() {
             </div>
 
             <div className="grid grid-cols-3 gap-4">
-              <div className="bg-blue-100 rounded-lg p-3 text-center">
+              <div className="bg-blue-100 rounded-lg p-3 text-center border-2 border-dashed border-blue-400">
                 <User size={24} className="text-blue-500 mx-auto mb-1" fill="currentColor" />
                 <p className="text-xs font-semibold text-blue-700">前面的人</p>
                 <p className="text-lg font-bold text-blue-900">{queue.frontValue}</p>
@@ -275,7 +275,7 @@ function App() {
                 <p className="text-lg font-bold text-rose-900">1</p>
               </div>
 
-              <div className="bg-emerald-100 rounded-lg p-3 text-center">
+              <div className="bg-emerald-100 rounded-lg p-3 text-center border-2 border-dashed border-emerald-400">
                 <User size={24} className="text-emerald-500 mx-auto mb-1" fill="currentColor" />
                 <p className="text-xs font-semibold text-emerald-700">后面的人</p>
                 <p className="text-lg font-bold text-emerald-900">{queue.backValue}</p>
