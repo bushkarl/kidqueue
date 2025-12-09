@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, ChevronRight, Calculator } from 'lucide-react';
+import { User, ChevronRight, Calculator, Eye, EyeOff } from 'lucide-react';
 
 type ProblemType = '1' | '2' | '3';
 
@@ -15,6 +15,7 @@ function App() {
     frontValue: 3,
     backValue: 4,
   });
+  const [showAnswer, setShowAnswer] = useState(false);
 
   const problemTypes = [
     {
@@ -125,34 +126,28 @@ function App() {
           </p>
         </header>
 
-        <div className="grid lg:grid-cols-3 gap-6 mb-10">
-          {problemTypes.map((problem) => (
-            <button
-              key={problem.id}
-              onClick={() => setQueue({ ...queue, type: problem.id })}
-              className={`p-6 rounded-2xl text-left transition-all duration-300 ${
-                queue.type === problem.id
-                  ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-xl scale-105'
-                  : 'bg-white text-gray-900 shadow-md hover:shadow-lg hover:scale-102'
-              }`}
-            >
-              <h3 className="text-xl font-bold mb-2">{problem.title}</h3>
-              <p
-                className={`text-sm mb-3 ${
-                  queue.type === problem.id ? 'text-blue-100' : 'text-gray-600'
+        <div className="bg-white rounded-2xl shadow-lg p-2 mb-10">
+          <div className="flex flex-wrap gap-2">
+            {problemTypes.map((problem) => (
+              <button
+                key={problem.id}
+                onClick={() => {
+                  setQueue({ ...queue, type: problem.id });
+                  setShowAnswer(false);
+                }}
+                className={`flex-1 min-w-[180px] px-4 py-3 rounded-xl text-center transition-all duration-200 font-semibold ${
+                  queue.type === problem.id
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                 }`}
               >
-                {problem.description}
-              </p>
-              <div
-                className={`text-lg font-mono font-semibold ${
-                  queue.type === problem.id ? 'text-white' : 'text-blue-600'
-                }`}
-              >
-                {problem.formula}
-              </div>
-            </button>
-          ))}
+                <div className="text-base">{problem.title}</div>
+                <div className={`text-xs mt-1 ${queue.type === problem.id ? 'text-blue-100' : 'text-gray-500'}`}>
+                  {problem.description}
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="bg-white rounded-3xl shadow-2xl p-8 mb-10">
@@ -163,11 +158,10 @@ function App() {
             </h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-6 mb-8">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <div className="flex flex-wrap items-center gap-4 mb-8 text-lg">
+            <div className="flex items-center gap-2">
+              <label className="font-semibold text-gray-700 whitespace-nowrap">
                 {currentProblem.frontLabel}
-                {currentProblem.unit && currentProblem.unit}
               </label>
               <input
                 type="number"
@@ -180,14 +174,16 @@ function App() {
                     frontValue: Math.max(1, Math.min(20, parseInt(e.target.value) || 1)),
                   })
                 }
-                className="w-full px-4 py-3 text-lg border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-20 px-3 py-2 text-center text-lg font-bold border-2 border-blue-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
               />
+              {currentProblem.unit && <span className="text-gray-600">{currentProblem.unit}</span>}
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <span className="text-gray-400 hidden sm:inline">•</span>
+
+            <div className="flex items-center gap-2">
+              <label className="font-semibold text-gray-700 whitespace-nowrap">
                 {currentProblem.backLabel}
-                {currentProblem.unit && currentProblem.unit}
               </label>
               <input
                 type="number"
@@ -200,39 +196,58 @@ function App() {
                     backValue: Math.max(1, Math.min(20, parseInt(e.target.value) || 1)),
                   })
                 }
-                className="w-full px-4 py-3 text-lg border-2 border-emerald-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-colors"
+                className="w-20 px-3 py-2 text-center text-lg font-bold border-2 border-emerald-300 rounded-lg focus:outline-none focus:border-emerald-500 transition-colors"
               />
+              {currentProblem.unit && <span className="text-gray-600">{currentProblem.unit}</span>}
             </div>
           </div>
 
           <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6 mb-8">
-            <div className="flex flex-wrap items-center justify-center gap-4 text-lg font-semibold mb-4">
-              <span className="text-blue-600">{queue.frontValue}</span>
-              <span className="text-gray-400">+</span>
-              <span className="text-emerald-600">{queue.backValue}</span>
-              {queue.type === '1' && (
-                <>
-                  <span className="text-gray-400">+</span>
-                  <span className="text-rose-600">1</span>
-                </>
+            <button
+              onClick={() => setShowAnswer(!showAnswer)}
+              className="w-full flex items-center justify-between gap-3 mb-4 px-4 py-3 bg-white rounded-xl hover:bg-blue-50 transition-colors shadow-sm"
+            >
+              <span className="text-lg font-bold text-gray-900">
+                {showAnswer ? '隐藏答案和列式' : '查看答案和列式'}
+              </span>
+              {showAnswer ? (
+                <EyeOff className="text-gray-600" size={24} />
+              ) : (
+                <Eye className="text-blue-600" size={24} />
               )}
-              {queue.type === '2' && (
-                <>
-                  <span className="text-gray-400">-</span>
-                  <span className="text-rose-600">1</span>
-                </>
-              )}
-              <span className="text-gray-400">=</span>
-              <span className="text-2xl font-bold text-gray-900">{total}</span>
-              <span className="text-gray-600">人</span>
-            </div>
+            </button>
 
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-              <p className="text-sm font-medium text-gray-800">
-                <span className="font-bold text-blue-700">为什么？</span>{' '}
-                {currentProblem.reason}
-              </p>
-            </div>
+            {showAnswer && (
+              <div className="space-y-4 animate-in fade-in duration-300">
+                <div className="flex flex-wrap items-center justify-center gap-4 text-lg font-semibold">
+                  <span className="text-blue-600">{queue.frontValue}</span>
+                  <span className="text-gray-400">+</span>
+                  <span className="text-emerald-600">{queue.backValue}</span>
+                  {queue.type === '1' && (
+                    <>
+                      <span className="text-gray-400">+</span>
+                      <span className="text-rose-600">1</span>
+                    </>
+                  )}
+                  {queue.type === '2' && (
+                    <>
+                      <span className="text-gray-400">-</span>
+                      <span className="text-rose-600">1</span>
+                    </>
+                  )}
+                  <span className="text-gray-400">=</span>
+                  <span className="text-2xl font-bold text-gray-900">{total}</span>
+                  <span className="text-gray-600">人</span>
+                </div>
+
+                <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                  <p className="text-sm font-medium text-gray-800">
+                    <span className="font-bold text-blue-700">为什么？</span>{' '}
+                    {currentProblem.reason}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="bg-gradient-to-r from-blue-50 via-rose-50 to-emerald-50 rounded-2xl p-8">
