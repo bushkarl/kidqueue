@@ -71,23 +71,19 @@ function App() {
   const total = calculateTotal();
 
   const renderQueue = () => {
-    const people = [];
     const mainPersonIndex = queue.type === '1' ? queue.frontValue : queue.frontValue - 1;
+    const frontPeople = [];
+    const backPeople = [];
 
     for (let i = 0; i < total; i++) {
       const isMainPerson = i === mainPersonIndex;
       const isFrontSection = i < mainPersonIndex;
       const isBackSection = i > mainPersonIndex;
 
-      people.push(
+      const personElement = (
         <div
           key={i}
-          className={`relative flex flex-col items-center transition-all duration-300 ${
-            isMainPerson ? 'scale-110' : 'scale-100'
-          } ${
-            isFrontSection ? 'border-2 border-dashed border-blue-400 rounded-lg p-2' :
-            isBackSection ? 'border-2 border-dashed border-emerald-400 rounded-lg p-2' : ''
-          }`}
+          className="relative flex flex-col items-center transition-all duration-300"
         >
           <div
             className={`relative ${
@@ -103,18 +99,51 @@ function App() {
               fill="currentColor"
               strokeWidth={1.5}
             />
-            {isMainPerson && (
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-rose-500 text-white text-xs font-bold px-2 py-1 rounded whitespace-nowrap shadow-lg">
-                主角
-              </div>
-            )}
           </div>
           <span className="text-xs mt-1 font-medium text-gray-600">{i + 1}</span>
         </div>
       );
+
+      if (isFrontSection) {
+        frontPeople.push(personElement);
+      } else if (isBackSection) {
+        backPeople.push(personElement);
+      }
     }
 
-    return people;
+    return (
+      <>
+        {frontPeople.length > 0 && (
+          <div className="border-2 border-dashed border-blue-400 rounded-lg p-3 bg-blue-50/30">
+            <div className="flex flex-wrap items-end justify-center gap-3">
+              {frontPeople}
+            </div>
+          </div>
+        )}
+
+        <div className="relative flex flex-col items-center transition-all duration-300 scale-110">
+          <div className="relative text-rose-500">
+            <User
+              size={48}
+              fill="currentColor"
+              strokeWidth={1.5}
+            />
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-rose-500 text-white text-xs font-bold px-2 py-1 rounded whitespace-nowrap shadow-lg">
+              主角
+            </div>
+          </div>
+          <span className="text-xs mt-1 font-medium text-gray-600">{mainPersonIndex + 1}</span>
+        </div>
+
+        {backPeople.length > 0 && (
+          <div className="border-2 border-dashed border-emerald-400 rounded-lg p-3 bg-emerald-50/30">
+            <div className="flex flex-wrap items-end justify-center gap-3">
+              {backPeople}
+            </div>
+          </div>
+        )}
+      </>
+    );
   };
 
   return (
