@@ -71,19 +71,20 @@ function App() {
   const total = calculateTotal();
 
   const renderQueue = () => {
+    const people = [];
     const mainPersonIndex = queue.type === '1' ? queue.frontValue : queue.frontValue - 1;
-    const frontPeople = [];
-    const backPeople = [];
 
     for (let i = 0; i < total; i++) {
       const isMainPerson = i === mainPersonIndex;
       const isFrontSection = i < mainPersonIndex;
       const isBackSection = i > mainPersonIndex;
 
-      const personElement = (
+      people.push(
         <div
           key={i}
-          className="relative flex flex-col items-center transition-all duration-300"
+          className={`relative flex flex-col items-center transition-all duration-300 ${
+            isMainPerson ? 'scale-110' : 'scale-100'
+          }`}
         >
           <div
             className={`relative ${
@@ -99,51 +100,18 @@ function App() {
               fill="currentColor"
               strokeWidth={1.5}
             />
+            {isMainPerson && (
+              <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-rose-500 text-white text-xs font-bold px-2 py-1 rounded whitespace-nowrap shadow-lg">
+                主角
+              </div>
+            )}
           </div>
           <span className="text-xs mt-1 font-medium text-gray-600">{i + 1}</span>
         </div>
       );
-
-      if (isFrontSection) {
-        frontPeople.push(personElement);
-      } else if (isBackSection) {
-        backPeople.push(personElement);
-      }
     }
 
-    return (
-      <>
-        {frontPeople.length > 0 && (
-          <div className="border-2 border-dashed border-blue-400 rounded-lg p-3 bg-blue-50/30">
-            <div className="flex flex-wrap items-end justify-center gap-3">
-              {frontPeople}
-            </div>
-          </div>
-        )}
-
-        <div className="relative flex flex-col items-center transition-all duration-300 scale-110">
-          <div className="relative text-rose-500">
-            <User
-              size={48}
-              fill="currentColor"
-              strokeWidth={1.5}
-            />
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-rose-500 text-white text-xs font-bold px-2 py-1 rounded whitespace-nowrap shadow-lg">
-              主角
-            </div>
-          </div>
-          <span className="text-xs mt-1 font-medium text-gray-600">{mainPersonIndex + 1}</span>
-        </div>
-
-        {backPeople.length > 0 && (
-          <div className="border-2 border-dashed border-emerald-400 rounded-lg p-3 bg-emerald-50/30">
-            <div className="flex flex-wrap items-end justify-center gap-3">
-              {backPeople}
-            </div>
-          </div>
-        )}
-      </>
-    );
+    return people;
   };
 
   return (
@@ -288,14 +256,12 @@ function App() {
               <h3 className="text-xl font-bold text-gray-900">队伍可视化</h3>
             </div>
 
-            <div className="border-2 border-dashed border-gray-400 rounded-xl bg-white/40 backdrop-blur-sm p-6 mb-6">
-              <div className="flex flex-wrap items-end justify-center gap-3 sm:gap-4 min-h-[120px]">
-                {renderQueue()}
-              </div>
+            <div className="flex flex-wrap items-end justify-center gap-3 sm:gap-4 min-h-[120px]">
+              {renderQueue()}
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-blue-100 rounded-lg p-3 text-center border-2 border-dashed border-blue-400">
+            <div className="grid grid-cols-3 gap-4 mt-8">
+              <div className="bg-blue-100 rounded-lg p-3 text-center">
                 <User size={24} className="text-blue-500 mx-auto mb-1" fill="currentColor" />
                 <p className="text-xs font-semibold text-blue-700">前面的人</p>
                 <p className="text-lg font-bold text-blue-900">{queue.frontValue}</p>
@@ -307,7 +273,7 @@ function App() {
                 <p className="text-lg font-bold text-rose-900">1</p>
               </div>
 
-              <div className="bg-emerald-100 rounded-lg p-3 text-center border-2 border-dashed border-emerald-400">
+              <div className="bg-emerald-100 rounded-lg p-3 text-center">
                 <User size={24} className="text-emerald-500 mx-auto mb-1" fill="currentColor" />
                 <p className="text-xs font-semibold text-emerald-700">后面的人</p>
                 <p className="text-lg font-bold text-emerald-900">{queue.backValue}</p>
