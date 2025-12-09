@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { User, ChevronRight, Calculator, Eye, EyeOff } from 'lucide-react';
-
-type ProblemType = '1' | '2' | '3';
-
-interface QueueState {
-  type: ProblemType;
-  frontValue: number;
-  backValue: number;
-}
+import { ProblemType, QueueState } from './types';
+import { CharacterSelector } from './components/CharacterSelector';
+import { SceneSelector } from './components/SceneSelector';
+import { useUserPreferences } from './hooks/useUserPreferences';
+import { getCharacterById } from './data/characters';
+import { getSceneById } from './data/scenes';
 
 function App() {
   const [queue, setQueue] = useState<QueueState>({
@@ -16,6 +14,15 @@ function App() {
     backValue: 4,
   });
   const [showAnswer, setShowAnswer] = useState(false);
+
+  const { preferences, updateCharacter, updateCustomName, updateScene } = useUserPreferences();
+
+  const selectedCharacter = getCharacterById(preferences.characterId);
+  const selectedScene = getSceneById(preferences.sceneId);
+
+  const characterName = preferences.characterId === 'custom' && preferences.customCharacterName
+    ? preferences.customCharacterName
+    : selectedCharacter.name;
 
   const problemTypes = [
     {
@@ -83,29 +90,33 @@ function App() {
         <div
           key={i}
           className={`relative flex flex-col items-center transition-all duration-300 border-none ${
-            isMainPerson ? 'scale-110' : 'scale-100'
+            isMainPerson ? 'scale-125' : 'scale-100'
           }`}
         >
-          <div
-            className={`relative ${
-              isMainPerson
-                ? 'text-rose-500'
-                : isFrontSection
-                ? 'text-blue-500'
-                : 'text-emerald-500'
-            }`}
-          >
-            <User
-              size={isMainPerson ? 48 : 40}
-              fill="currentColor"
-              strokeWidth={1.5}
-            />
-            {isMainPerson && (
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-rose-500 text-white text-xs font-bold px-2 py-1 rounded whitespace-nowrap shadow-lg">
-                主角
+          {isMainPerson ? (
+            <div className="relative flex flex-col items-center">
+              <div className="text-6xl mb-1 animate-bounce" style={{ animationDuration: '2s' }}>
+                {selectedCharacter.emoji}
               </div>
-            )}
-          </div>
+              <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap shadow-lg">
+                {characterName}
+              </div>
+            </div>
+          ) : (
+            <div
+              className={`relative ${
+                isFrontSection
+                  ? 'text-blue-500'
+                  : 'text-emerald-500'
+              }`}
+            >
+              <User
+                size={40}
+                fill="currentColor"
+                strokeWidth={1.5}
+              />
+            </div>
+          )}
           <span className="text-xs mt-1 font-medium text-gray-600">{i + 1}</span>
         </div>
       );
@@ -115,16 +126,32 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-emerald-50">
+    <div className={`min-h-screen bg-gradient-to-br ${selectedScene.bgGradient} transition-colors duration-500`}>
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <header className="text-center mb-12">
+        <header className="text-center mb-8">
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-3">
             排队问题可视化
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-gray-600 mb-2">
             通过动画直观理解三种排队计算题型
           </p>
+          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+            <span className="text-2xl">{selectedScene.emoji}</span>
+            <span className="text-sm font-semibold text-gray-700">{selectedScene.description}</span>
+          </div>
         </header>
+
+        <CharacterSelector
+          selectedId={preferences.characterId}
+          customName={preferences.customCharacterName}
+          onSelectCharacter={updateCharacter}
+          onCustomNameChange={updateCustomName}
+        />
+
+        <SceneSelector
+          selectedId={preferences.sceneId}
+          onSelectScene={updateScene}
+        />
 
         <div className="bg-white rounded-2xl shadow-lg p-2 mb-10">
           <div className="flex flex-wrap gap-2">
@@ -273,9 +300,9 @@ function App() {
                 <p className="text-lg font-bold text-blue-900">{queue.frontValue}</p>
               </div>
 
-              <div className="bg-rose-100 rounded-lg p-3 text-center border-none">
-                <User size={32} className="text-rose-500 mx-auto mb-1" fill="currentColor" />
-                <p className="text-xs font-semibold text-rose-700">主角（自己）</p>
+              <div className="bg-gradient-to-br from-rose-100 to-pink-100 rounded-lg p-3 text-center border-2 border-rose-300 shadow-md">
+                <div className="text-4xl mb-1">{selectedCharacter.emoji}</div>
+                <p className="text-xs font-semibold text-rose-700">{characterName}</p>
                 <p className="text-lg font-bold text-rose-900">1</p>
               </div>
 
