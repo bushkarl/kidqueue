@@ -163,19 +163,22 @@ function App() {
               <label className="font-semibold text-gray-700 whitespace-nowrap">
                 {currentProblem.frontLabel}
               </label>
-              <input
-                type="number"
-                min="1"
-                max="20"
+              <select
                 value={queue.frontValue}
                 onChange={(e) =>
                   setQueue({
                     ...queue,
-                    frontValue: Math.max(1, Math.min(20, parseInt(e.target.value) || 1)),
+                    frontValue: parseInt(e.target.value),
                   })
                 }
-                className="w-20 px-3 py-2 text-center text-lg font-bold border-2 border-blue-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
-              />
+                className="w-20 px-3 py-2 text-center text-lg font-bold border-2 border-blue-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors bg-white cursor-pointer"
+              >
+                {Array.from({ length: 19 }, (_, i) => i + 1).map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
               {currentProblem.unit && <span className="text-gray-600">{currentProblem.unit}</span>}
             </div>
 
@@ -185,19 +188,22 @@ function App() {
               <label className="font-semibold text-gray-700 whitespace-nowrap">
                 {currentProblem.backLabel}
               </label>
-              <input
-                type="number"
-                min="1"
-                max="20"
+              <select
                 value={queue.backValue}
                 onChange={(e) =>
                   setQueue({
                     ...queue,
-                    backValue: Math.max(1, Math.min(20, parseInt(e.target.value) || 1)),
+                    backValue: parseInt(e.target.value),
                   })
                 }
-                className="w-20 px-3 py-2 text-center text-lg font-bold border-2 border-emerald-300 rounded-lg focus:outline-none focus:border-emerald-500 transition-colors"
-              />
+                className="w-20 px-3 py-2 text-center text-lg font-bold border-2 border-emerald-300 rounded-lg focus:outline-none focus:border-emerald-500 transition-colors bg-white cursor-pointer"
+              >
+                {Array.from({ length: 19 }, (_, i) => i + 1).map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
               {currentProblem.unit && <span className="text-gray-600">{currentProblem.unit}</span>}
             </div>
           </div>
