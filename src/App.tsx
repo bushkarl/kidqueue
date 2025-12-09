@@ -256,11 +256,13 @@ function App() {
               <h3 className="text-xl font-bold text-gray-900">队伍可视化</h3>
             </div>
 
-            <div className="flex flex-wrap items-end justify-center gap-3 sm:gap-4 min-h-[120px]">
-              {renderQueue()}
+            <div className="border-2 border-dashed border-gray-400 rounded-xl bg-white/40 backdrop-blur-sm p-6 mb-6">
+              <div className="flex flex-wrap items-end justify-center gap-3 sm:gap-4 min-h-[120px]">
+                {renderQueue()}
+              </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mt-8">
+            <div className="grid grid-cols-3 gap-4">
               <div className="bg-blue-100 rounded-lg p-3 text-center">
                 <User size={24} className="text-blue-500 mx-auto mb-1" fill="currentColor" />
                 <p className="text-xs font-semibold text-blue-700">前面的人</p>
